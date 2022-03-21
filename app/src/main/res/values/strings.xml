@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">CarPooling</string>
+    <string name="title_activity_bottom_navigation">Bottom_Navigation</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_rides">Rides</string>
+    <string name="title_home">Home</string>
+
+    <string-array name="numbers">
+        <item>One</item>
+        <item>Two</item>
+        <item>Three</item>
+        <item>Four</item>
+    </string-array>
+
+    <string-array name="option">
+        <item>No</item>
+        <item>Yes</item>
+    </string-array>
+</resources>
