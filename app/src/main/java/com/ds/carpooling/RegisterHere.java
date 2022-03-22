@@ -12,9 +12,14 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -137,26 +142,32 @@ public class RegisterHere extends AppCompatActivity {
 
                                 User user = new User(fname,lname,mail,phoneNo,add,pwd);
 
-                                mAuth.getCurrentUser().sendEmailVerification().addOnSuccessListener(unused -> {
-                                    Toast.makeText(RegisterHere.this, "Registration Successful please check your email for verification", Toast.LENGTH_SHORT).show();
+                                mAuth.getCurrentUser().sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Toast.makeText(RegisterHere.this, "Registration Successful please check your email for verification", Toast.LENGTH_SHORT).show();
 
-                                    FirebaseDatabase database=FirebaseDatabase.getInstance();
-                                    DatabaseReference DBRef=database.getReference("Registration").child(mAuth.getCurrentUser().getUid());
-                                    DBRef.setValue(user).addOnCompleteListener(task1 -> {
+                                        FirebaseDatabase database=FirebaseDatabase.getInstance();
+                                        DatabaseReference DBRef=database.getReference("Registration").child(mAuth.getCurrentUser().getUid());
+                                        DBRef.setValue(user).addOnCompleteListener(task1 -> {
 
-                                        if (task1.isSuccessful()){
-
-                                            //Toast.makeText(RegisterHere.this, "Registered Successfully ! ", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(RegisterHere.this, Login.class);
-                                            startActivity(intent);
-                                        }
-                                        else{
-                                            Toast.makeText(RegisterHere.this, "Registration failed. Try again ", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(RegisterHere.this, MainActivity.class);
-                                            startActivity(intent);
-                                        }
-                                    });
-                                }).addOnFailureListener(e -> Toast.makeText(RegisterHere.this, "Verification Email has not been sent !", Toast.LENGTH_SHORT).show());
+                                            if (task1.isSuccessful()){
+                                                Intent intent = new Intent(RegisterHere.this, Login.class);
+                                                startActivity(intent);
+                                            }
+                                            else{
+                                                Toast.makeText(RegisterHere.this, "Registration failed. Try again ", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(RegisterHere.this, MainActivity.class);
+                                                startActivity(intent);
+                                            }
+                                        });
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(RegisterHere.this, "Verification Email has not been sent !", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
                             else{
                                 Toast.makeText(RegisterHere.this, "Failed to register", Toast.LENGTH_SHORT).show();

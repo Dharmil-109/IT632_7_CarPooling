@@ -6,7 +6,6 @@
     android:layout_height="fill_parent"
     tools:context=".Splash_Screen">
 
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

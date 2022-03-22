@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.ds.carpooling.MapsActivity;
 import com.ds.carpooling.OfferRide;
 import com.ds.carpooling.R;
 import com.ds.carpooling.databinding.FragmentHomeBinding;
@@ -18,8 +19,7 @@ import com.ds.carpooling.databinding.FragmentHomeBinding;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-    Button btnOfferRide;
-//            btnTakeRide;
+    Button btnOfferRide, btnTakeRide;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -39,14 +39,14 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        /*btnTakeRide = root.findViewById(R.id.btn_TakeRide);
+        btnTakeRide = root.findViewById(R.id.btn_TakeRide);
         btnTakeRide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getContext(), TakeRide.class);
+                Intent i = new Intent(getContext(), MapsActivity.class);
                 startActivity(i);
             }
-        });*/
+        });
 
 //        final TextView textView = binding.textHome;
 //        notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);

@@ -37,5 +37,4 @@ public class User
         this.phoneNo=phoneNo;
         this.address=address;
     }
-
 }

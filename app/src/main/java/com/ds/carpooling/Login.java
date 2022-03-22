@@ -81,21 +81,27 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        tvForgotPassword.setOnClickListener(view -> {
-            String mail = email.getText().toString().trim();
-            if (mail.isEmpty()) {
-                email.setError("Please enter your email for reset");
-                email.requestFocus();
-                return;
-            }
-            mAuth.sendPasswordResetEmail(email.getText().toString().trim())
-                    .addOnCompleteListener(task -> {
+        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String mail = email.getText().toString().trim();
+                if (mail.isEmpty()) {
+                    email.setError("Please enter your email for reset");
+                    email.requestFocus();
+                    return;
+                }
+                mAuth.sendPasswordResetEmail(email.getText().toString().trim())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
-                            Toast.makeText(Login.this, "Reset Password link send to your email", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Login.this, "Password send to your email", Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
-                    });
+                    }
+                });
+            }
         });
     }
 }

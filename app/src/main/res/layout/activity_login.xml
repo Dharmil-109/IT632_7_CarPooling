@@ -14,11 +14,11 @@
         android:id="@+id/tv_login"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="Login Here"
-        android:textSize="25dp"
         android:gravity="center"
-        android:textStyle="bold"
-        android:textColor="@color/black" />
+        android:text="Login Here"
+        android:textColor="@color/black"
+        android:textSize="25dp"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/edt_emailID"
@@ -52,10 +52,10 @@
         android:id="@+id/tv_forgotPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Forgot Password?"
-        android:textSize="17dp"
-        android:gravity="end"
+        android:layout_below="@+id/btn_loginHere"
         android:layout_marginTop="30dp"
-        android:layout_below="@+id/btn_loginHere"/>
+        android:gravity="end"
+        android:text="Forgot Password?"
+        android:textSize="17dp" />
 
 </RelativeLayout>
