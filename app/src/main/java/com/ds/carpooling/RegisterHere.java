@@ -145,7 +145,24 @@ public class RegisterHere extends AppCompatActivity {
                                 mAuth.getCurrentUser().sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
-                                        Toast.makeText(RegisterHere.this, "Verification Email has been sent !", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(RegisterHere.this, "Registration Successful please check your email for verification", Toast.LENGTH_SHORT).show();
+
+                                        FirebaseDatabase database=FirebaseDatabase.getInstance();
+                                        DatabaseReference DBRef=database.getReference("Registration").child(mAuth.getCurrentUser().getUid());
+                                        DBRef.setValue(user).addOnCompleteListener(task1 -> {
+
+                                            if (task1.isSuccessful()){
+
+                                                //Toast.makeText(RegisterHere.this, "Registered Successfully ! ", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(RegisterHere.this, Login.class);
+                                                startActivity(intent);
+                                            }
+                                            else{
+                                                Toast.makeText(RegisterHere.this, "Registration failed. Try again ", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(RegisterHere.this, MainActivity.class);
+                                                startActivity(intent);
+                                            }
+                                        });
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
@@ -153,41 +170,12 @@ public class RegisterHere extends AppCompatActivity {
                                         Toast.makeText(RegisterHere.this, "Verification Email has not been sent !", Toast.LENGTH_SHORT).show();
                                     }
                                 });
-                                FirebaseDatabase database=FirebaseDatabase.getInstance();
-                                DatabaseReference DBRef=database.getReference("Registration").child(mAuth.getCurrentUser().getUid());
-                                DBRef.setValue(user).addOnCompleteListener(task1 -> {
-
-                                    if (task1.isSuccessful()){
-
-                                        Toast.makeText(RegisterHere.this, "Registered Successfully ! ", Toast.LENGTH_SHORT).show();
-                                        //Toast.makeText(RegisterHere.this, "User Created Successfully", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(RegisterHere.this, MainActivity.class);
-                                        startActivity(intent);
-                                    }
-                                    else{
-                                        Toast.makeText(RegisterHere.this, "Failed to register. Try Again", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                                /*if(mAuth.getCurrentUser().isEmailVerified())
-                                {
-
-                                }
-                                else
-                                {
-                                    Toast.makeText(RegisterHere.this, "Please verify your email !", Toast.LENGTH_SHORT).show();
-                                }*/
-
                             }
                             else{
                                 Toast.makeText(RegisterHere.this, "Failed to register", Toast.LENGTH_SHORT).show();
                             }
                         });
-
-
-
             }
-
-
         });
     }
 }

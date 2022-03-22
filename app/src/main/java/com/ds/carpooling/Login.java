@@ -1,5 +1,6 @@
 package com.ds.carpooling;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -29,15 +32,7 @@ public class Login extends AppCompatActivity {
         email = findViewById(R.id.edt_emailID);
         password = findViewById(R.id.edt_pwd);
         login = findViewById(R.id.btn_loginHere);
-
         tvForgotPassword = findViewById(R.id.tv_forgotPassword);
-
-        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(Login.this, "Yaad Toh Rakho", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,13 +64,41 @@ public class Login extends AppCompatActivity {
 
                 mAuth.signInWithEmailAndPassword(mail,pass).addOnCompleteListener(task -> {
 
+
                     if (task.isSuccessful()){
-                        Intent intent = new Intent(Login.this, Bottom_Navigation.class);
-                        startActivity(intent);
-                        Toast.makeText(Login.this, "Logged in successfuly", Toast.LENGTH_SHORT).show();
+                        if(mAuth.getCurrentUser().isEmailVerified()){
+                            Intent intent = new Intent(Login.this, Bottom_Navigation.class);
+                            startActivity(intent);
+                            Toast.makeText(Login.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(Login.this, "Please verify your email", Toast.LENGTH_SHORT).show();
+                        }
                     }
                     else{
                         Toast.makeText(Login.this, "Failed to Login", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String mail = email.getText().toString().trim();
+                if (mail.isEmpty()) {
+                    email.setError("Please enter your email for reset");
+                    email.requestFocus();
+                    return;
+                }
+                mAuth.sendPasswordResetEmail(email.getText().toString().trim())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(Login.this, "Password send to your email", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
             }
