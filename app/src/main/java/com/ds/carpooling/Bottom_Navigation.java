@@ -14,22 +14,22 @@ import com.ds.carpooling.databinding.ActivityBottomNavigationBinding;
 
 public class Bottom_Navigation extends AppCompatActivity {
 
-    private ActivityBottomNavigationBinding binding;
+    private ActivityBottomNavigationBinding userbinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityBottomNavigationBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        userbinding = ActivityBottomNavigationBinding.inflate(getLayoutInflater());
+        setContentView(userbinding.getRoot());
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_Profile, R.id.navigation_Rides, R.id.navigation_home)
+                R.id.navigation_Profile, R.id.navigation_Rides, R.id.navigation_home_user)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_bottom_navigation);
 //        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(binding.navView, navController);
+        NavigationUI.setupWithNavController(userbinding.navView, navController);
     }
 }

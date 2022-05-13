@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_approve"
+        android:icon="@drawable/accept"
+        android:title="Approve" />
+    <item
+        android:id="@+id/navigation_pending"
+        android:icon="@drawable/pending"
+        android:title="Pending" />
+    <item
+        android:id="@+id/navigation_reject"
+        android:icon="@drawable/reject"
+        android:title="Reject" />
+
+</menu>

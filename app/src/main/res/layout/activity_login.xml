@@ -48,6 +48,37 @@
         android:textSize="20dp"
         android:textStyle="bold" />
 
+   <!-- <TextView
+        android:id="@+id/tv_admin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_forgotPassword"
+        android:layout_marginTop="30dp"
+        android:gravity="end"
+        android:text="Admin Login"
+        android:textSize="17dp" />-->
+
+   <!-- <TextView
+        android:id="@+id/tv_admin_panel_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_loginHere"
+        android:layout_alignParentEnd="true"
+        android:text="Admin Login"
+        android:textSize="17dp"
+        android:layout_marginTop="10dp" />-->
+
+   <!-- <TextView
+        android:id="@+id/tv_not_admin_panel_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_loginHere"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:text="User Login"
+        android:textSize="17dp"
+        android:visibility="invisible" />-->
+
     <TextView
         android:id="@+id/tv_forgotPassword"
         android:layout_width="match_parent"
@@ -57,5 +88,4 @@
         android:gravity="end"
         android:text="Forgot Password?"
         android:textSize="17dp" />
-
 </RelativeLayout>

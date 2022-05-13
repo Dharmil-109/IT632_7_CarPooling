@@ -3,8 +3,11 @@ package com.ds.carpooling;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,33 +22,40 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Login extends AppCompatActivity {
 
-    private TextView tvLogin,tvForgotPassword;
-    private EditText email,password;
+    private TextView tvLogin, tvForgotPassword, tvAdmin;
+    private EditText email, password;
     private Button login;
     private FirebaseAuth mAuth;
+    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mAuth=FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         email = findViewById(R.id.edt_emailID);
         password = findViewById(R.id.edt_pwd);
         login = findViewById(R.id.btn_loginHere);
         tvForgotPassword = findViewById(R.id.tv_forgotPassword);
+        sp = getSharedPreferences("MyUserPrefs", Context.MODE_PRIVATE);
+
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               loginUser();
+                loginUser();
             }
 
             private void loginUser() {
                 String mail = email.getText().toString().trim();
                 String pass = password.getText().toString().trim();
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("email", mail);
+                editor.putString("password", pass);
+                editor.commit();
 
                 if (mail.isEmpty()) {
-                    email.setError("Address is Required");
+                    email.setError("Email Address is Required");
                     email.requestFocus();
                     return;
                 }
@@ -61,26 +71,29 @@ public class Login extends AppCompatActivity {
                     password.requestFocus();
                     return;
                 }
+                if (mail.equals("adminlogin123@gmail.com") && pass.equals("admin123")) {
+                    Toast.makeText(getApplicationContext(),
+                            "Redirecting to admin dashboard...", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Login.this, Bottom_Admin.class);
+                    startActivity(intent);
+                } else {
+                    mAuth.signInWithEmailAndPassword(mail, pass).addOnCompleteListener(task -> {
 
-                mAuth.signInWithEmailAndPassword(mail,pass).addOnCompleteListener(task -> {
-
-
-                    if (task.isSuccessful()){
-                        if(mAuth.getCurrentUser().isEmailVerified()){
-                            Intent intent = new Intent(Login.this, Bottom_Navigation.class);
-                            startActivity(intent);
-                            Toast.makeText(Login.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(Login.this, "Please verify your email", Toast.LENGTH_SHORT).show();
+                        if (task.isSuccessful()) {
+                            if (mAuth.getCurrentUser().isEmailVerified()) {
+                                Intent intent = new Intent(Login.this, Bottom_Navigation.class);
+                                startActivity(intent);
+                                Toast.makeText(Login.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(Login.this, "Please verify your email", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(Login.this, "Failed to Login", Toast.LENGTH_SHORT).show();
                         }
-                    }
-                    else{
-                        Toast.makeText(Login.this, "Failed to Login", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    });
+                }
             }
         });
-
         tvForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,16 +105,24 @@ public class Login extends AppCompatActivity {
                 }
                 mAuth.sendPasswordResetEmail(email.getText().toString().trim())
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(Login.this, "Password send to your email", Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(Login.this, "Link has been sent to your registered email", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                        });
             }
         });
+//
+//        tvAdmin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(Login.this, Login.class);
+//                startActivity(intent);            }
+//        });
     }
 }
